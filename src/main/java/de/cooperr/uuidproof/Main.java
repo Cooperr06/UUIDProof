@@ -18,6 +18,7 @@ public class Main {
         AtomicLong count = new AtomicLong();
         AtomicReference<UUID> firstUUIDPrint = new AtomicReference<>();
         AtomicReference<UUID> secondUUIDPrint = new AtomicReference<>();
+        Timer timer = new Timer();
 
 
         new Thread(() -> {
@@ -48,6 +49,8 @@ public class Main {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+                    timer.cancel();
                 } else {
                     firstUUIDPrint.set(firstUUID);
                     secondUUIDPrint.set(secondUUID);
@@ -55,7 +58,7 @@ public class Main {
             }
         }).start();
 
-        new Timer().schedule(new TimerTask() {
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 System.out.println("Try: " + count);
