@@ -3,49 +3,67 @@ package de.cooperr.uuidproof;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        boolean running = true;
-        long count = 0;
+        AtomicBoolean running = new AtomicBoolean(true);
+        AtomicLong count = new AtomicLong();
+        AtomicReference<UUID> firstUUIDPrint = new AtomicReference<>();
+        AtomicReference<UUID> secondUUIDPrint = new AtomicReference<>();
 
-        while (running) {
 
-            count++;
+        new Thread(() -> {
+            while (running.get()) {
 
-            UUID firstUUID = UUID.randomUUID();
-            UUID secondUUID = UUID.randomUUID();
+                count.getAndIncrement();
 
-            if (firstUUID.equals(secondUUID)) {
+                UUID firstUUID = UUID.randomUUID();
+                UUID secondUUID = UUID.randomUUID();
 
-                System.out.println("Try: " + count);
-                System.out.println("Result: TRUE\n");
-                System.out.println("UUID_1: " + firstUUID.toString());
-                System.out.println("UUID_2: " + secondUUID.toString() + "\n");
-                System.out.println("---------- IT'S DONE ----------");
+                if (firstUUID.equals(secondUUID)) {
 
-                running = false;
-
-                final File file = new File("src/main/resources/", "Result.txt");
-
-                FileOutputStream outputStream = new FileOutputStream(file);
-                outputStream.write(("Try: " + count + "\nResult: TRUE\nUUID_1: " + firstUUID.toString() + "\nUUID_2: " + secondUUID.toString()).getBytes());
-                outputStream.flush();
-                outputStream.close();
-
-            } else {
-
-                if (count % 1000 == 0) {
                     System.out.println("Try: " + count);
-                    System.out.println("Result: FALSE\n");
+                    System.out.println("Result: TRUE\n");
                     System.out.println("UUID_1: " + firstUUID.toString());
-                    System.out.println("UUID_2: " + secondUUID.toString() + "\n\n--------------------\n");
-                }
+                    System.out.println("UUID_2: " + secondUUID.toString() + "\n");
+                    System.out.println("---------- IT'S DONE ----------");
 
+                    running.set(false);
+
+                    final File file = new File("src/main/resources/", "Result.txt");
+
+                    try {
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        outputStream.write(("Try: " + count + "\nResult: TRUE\nUUID_1: " + firstUUID.toString() + "\nUUID_2: " + secondUUID.toString()).getBytes());
+                        outputStream.flush();
+                        outputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    firstUUIDPrint.set(firstUUID);
+                    secondUUIDPrint.set(secondUUID);
+                }
             }
-        }
+        }).start();
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Try: " + count);
+                System.out.println("Result: FALSE\n");
+                System.out.println("UUID_1: " + firstUUIDPrint.toString());
+                System.out.println("UUID_2: " + secondUUIDPrint.toString() + "\n\n--------------------\n");
+            }
+        }, 0, 10000);
+
     }
 }
