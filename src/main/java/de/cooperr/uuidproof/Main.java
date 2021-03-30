@@ -40,7 +40,7 @@ public class Main {
             } else {
 
                 printCountdown++;
-                if (printCountdown == 30) {
+                if (printCountdown == 100) {
                     System.out.println("Try: " + count);
                     System.out.println("Result: FALSE\n");
                     System.out.println("UUID_1: " + firstUUID.toString());
