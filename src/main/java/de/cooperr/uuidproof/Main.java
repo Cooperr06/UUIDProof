@@ -11,7 +11,6 @@ public class Main {
 
         boolean running = true;
         long count = 0;
-        byte printCountdown = 0;
 
         while (running) {
 
@@ -39,14 +38,11 @@ public class Main {
 
             } else {
 
-                printCountdown++;
-                if (printCountdown == 100) {
+                if (count % 1000 == 0) {
                     System.out.println("Try: " + count);
                     System.out.println("Result: FALSE\n");
                     System.out.println("UUID_1: " + firstUUID.toString());
                     System.out.println("UUID_2: " + secondUUID.toString() + "\n\n--------------------\n");
-
-                    printCountdown = 0;
                 }
 
             }
