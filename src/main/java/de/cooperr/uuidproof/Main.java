@@ -15,11 +15,12 @@ public class Main {
     public static void main(String[] args) {
 
         AtomicBoolean running = new AtomicBoolean(true);
-        AtomicLong count = new AtomicLong();
-        AtomicReference<UUID> firstUUIDPrint = new AtomicReference<>();
-        AtomicReference<UUID> secondUUIDPrint = new AtomicReference<>();
-        Timer timer = new Timer();
+        final AtomicLong count = new AtomicLong();
 
+        final AtomicReference<UUID> firstUUIDPrint = new AtomicReference<>();
+        final AtomicReference<UUID> secondUUIDPrint = new AtomicReference<>();
+
+        final Timer timer = new Timer();
 
         new Thread(() -> {
             while (running.get()) {
