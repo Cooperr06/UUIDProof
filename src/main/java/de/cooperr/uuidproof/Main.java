@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        AtomicBoolean running = new AtomicBoolean(true);
+        final AtomicBoolean running = new AtomicBoolean(true);
         final AtomicLong count = new AtomicLong();
 
         final AtomicReference<UUID> firstUUIDPrint = new AtomicReference<>();
@@ -43,7 +43,7 @@ public class Main {
                     final File file = new File("src/main/resources/", "Result.txt");
 
                     try {
-                        FileOutputStream outputStream = new FileOutputStream(file);
+                        final FileOutputStream outputStream = new FileOutputStream(file);
                         outputStream.write(("Try: " + count + "\nResult: TRUE\nUUID_1: " + firstUUID.toString() + "\nUUID_2: " + secondUUID.toString()).getBytes());
                         outputStream.flush();
                         outputStream.close();
