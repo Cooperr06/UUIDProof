@@ -1,8 +1,5 @@
 package de.cooperr.uuidproof;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -40,17 +37,6 @@ public class Main {
 
                     running.set(false);
 
-                    final File file = new File("src/main/resources/", "Result.txt");
-
-                    try {
-                        final FileOutputStream outputStream = new FileOutputStream(file);
-                        outputStream.write(("Try: " + count + "\nResult: TRUE\nUUID_1: " + firstUUID.toString() + "\nUUID_2: " + secondUUID.toString()).getBytes());
-                        outputStream.flush();
-                        outputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
                     timer.cancel();
                 } else {
                     firstUUIDPrint.set(firstUUID);
@@ -68,6 +54,5 @@ public class Main {
                 System.out.println("UUID_2: " + secondUUIDPrint.toString() + "\n\n--------------------\n");
             }
         }, 0, 10000);
-
     }
 }

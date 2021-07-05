@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.cooperr</groupId>
-    <artifactId>UUIDProof</artifactId>
-    <version>v1.0</version>
+    <artifactId>uuid-proof</artifactId>
+    <version>1.0</version>
     <build>
         <plugins>
             <plugin>
